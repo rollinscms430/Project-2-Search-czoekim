@@ -80,5 +80,3 @@ def find_end(dictionary, start_word, end_word):
                 
 print find_end(all_words, 'snakes', 'brains')
             
-
-    
