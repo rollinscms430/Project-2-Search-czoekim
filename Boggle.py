@@ -3,12 +3,6 @@
 
 f = open('words.txt')
 
-letters = [['u','n','t','h'], ['g','a','e','s'], 
-    ['s','r','t','r'], ['h','m', 'i', 'a']] 
-    
-positions = [[(0,0),(0,1),(0,2),(0,3)],[(1,0),(1,1),(1,2),(1,3)],
-    [(2,0),(2,1),(2,2),(2,3)],[(3,0),(3,1),(3,2),(3,3)]]
-
 def gen_dict(dictionary):
     all_words = {}
     for each in dictionary:
@@ -62,8 +56,8 @@ def create_level(curr_position):
     return new_level
 
 def possible_pos_dict(positions):
-    """ Generates a dictionary of possible letters using create_level method 
-    on each position on the board
+    """ Generates a dictionary of possible position moves using create_level 
+    method on each position on the board
     param: list of positions
     returns: dictionary with position as key and list of adjacent 
     positions as its values """
@@ -137,12 +131,24 @@ def find_words(start):
             for possible_pos in possible_letters if possible_pos not in sequence])
         
     return words
+
+
+letters = [['u','n','t','h'], ['g','a','e','s'], 
+    ['s','r','t','r'], ['h','m', 'i', 'a']] 
     
+positions = [[(0,0),(0,1),(0,2),(0,3)],[(1,0),(1,1),(1,2),(1,3)],
+    [(2,0),(2,1),(2,2),(2,3)],[(3,0),(3,1),(3,2),(3,3)]]
+
+
 all_words = gen_dict(f)  
 prefix_dict = gen_prefix_dict(all_words)
 board = create_matrix(letters, positions)
 position_dict = possible_pos_dict(positions)
 
-for position_list in positions:
-    for position in position_list:
-        print board.get(position), position, find_words(position), '\n'
+def solution():
+
+    for position_list in positions:
+        for position in position_list:
+            print board.get(position), position, find_words(position), '\n'
+
+solution()
