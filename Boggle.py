@@ -91,14 +91,13 @@ def find_words(start):
     param: start location on board
     returns: list of words that can be generated from that position
     """
-    
-    words = []
+    words = [] 
     stack = [] 
     
     # Stack: list of tuples - each tuple holds a possible position, 
     # a list of the sequence, and the letters of the sequence + the letter at
-    # the possible position
-    # A tuple is created for each possible position
+    # the possible position (at start, contains only one letter)
+    # Tuple is created for each possible position from root node
     
     for possible_pos in position_dict[start]: 
         stack.append((possible_pos, [start], board.get(start)))
@@ -111,25 +110,20 @@ def find_words(start):
         
         if len(word) == 2:
             if word not in prefix_dict:
-                continue
-            else:
-                possible_letters = position_dict[current]
-                
-                #New tuples added to the stack of possible positions from the
-                #current word. Keeps track of current sequence to make sure
-                #none of the possibilities will overlap
-                stack.extend([(possible_pos, sequence + [current], word) 
-                for possible_pos in possible_letters if possible_pos not in sequence])
+                continue #Closes off entire node if the prefix does not exist
                 
         if word in all_words:
-            words.append(word)
-            
-            possible_letters = position_dict[current]
-            
-            #In case words can be formed by a word already in dictionary
-            stack.extend([(possible_pos, sequence + [current], word) 
-            for possible_pos in possible_letters if possible_pos not in sequence])
-        
+            if word not in words:
+                words.append(word)
+                
+        possible_letters = position_dict[current]
+                
+        #New tuples added to the stack of possible positions from the
+        #current word. Keeps track of current sequence to make sure
+        #none of the possibilities will overlap
+        stack.extend([(possible_pos, sequence + [current], word) 
+        for possible_pos in possible_letters if possible_pos not in sequence])
+    
     return words
 
 
@@ -140,10 +134,10 @@ positions = [[(0,0),(0,1),(0,2),(0,3)],[(1,0),(1,1),(1,2),(1,3)],
     [(2,0),(2,1),(2,2),(2,3)],[(3,0),(3,1),(3,2),(3,3)]]
 
 
-all_words = gen_dict(f)  
-prefix_dict = gen_prefix_dict(all_words)
-board = create_matrix(letters, positions)
-position_dict = possible_pos_dict(positions)
+all_words = gen_dict(f) #dict of all words 
+prefix_dict = gen_prefix_dict(all_words) #dict of all possible prefixes
+board = create_matrix(letters, positions) #assigns each position to a letter
+position_dict = possible_pos_dict(positions) #dict of all possible moves from a position
 
 def solution():
 
@@ -152,3 +146,4 @@ def solution():
             print board.get(position), position, find_words(position), '\n'
 
 solution()
+
